@@ -30,7 +30,9 @@ RUN tar xf VOCtest_06-Nov-2007.tar
 
 RUN python voc_label.py
 RUN cat 2007_train.txt 2007_val.txt 2012_*.txt > train.txt
-RUN echo "classes= 20\ntrain = train.txt\nvalid = 2007_test.txt\nnames = data/voc.names\nbackup = backup" > cfg/voc.data
+
+RUN sed -i -e "s/train  = \/home\/pjreddie\/data\/voc\/train.txt/train = train.txt/g" ./cfg/cfg/voc.data \
+    && sed -i -e "s/valid  = \/home\/pjreddie\/data\/voc\/2007_test.txt/valid = 2007_test.txt/g" ./cfg/cfg/voc.data 
 
 RUN sed -i -e "s/batch=1/batch=64/g" ./cfg/yolov3-voc.cfg \
     && sed -i -e "s/subdivisions=1/subdivisions=16/g" ./cfg/yolov3-voc.cfg 
