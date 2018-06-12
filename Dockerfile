@@ -28,13 +28,15 @@ RUN tar xf VOCtrainval_11-May-2012.tar
 RUN tar xf VOCtrainval_06-Nov-2007.tar
 RUN tar xf VOCtest_06-Nov-2007.tar
 
+RUN sed -i -e "s/classes = \[\"aeroplane\", \"bicycle\", \"bird\", \"boat\", \"bottle\", \"bus\", \"car\", \"cat\", \"chair\", \"cow\", \"diningtable\", \"dog\", \"horse\", \"motorbike\", \"person\", \"pottedplant\", \"sheep\", \"sofa\", \"train\", \"tvmonitor\"\]/classes = \[\"bus\", \"car\"\]/g" ./voc_label.py
 RUN python voc_label.py
 RUN cat 2007_train.txt 2007_val.txt 2012_*.txt > train.txt
 
 RUN sed -i -e "s/train  = \/home\/pjreddie\/data\/voc\/train.txt/train = train.txt/g" ./cfg/voc.data \
-    && sed -i -e "s/valid  = \/home\/pjreddie\/data\/voc\/2007_test.txt/valid = 2007_test.txt/g" ./cfg/voc.data 
+    && sed -i -e "s/valid  = \/home\/pjreddie\/data\/voc\/2007_test.txt/valid = 2007_test.txt/g" ./cfg/voc.data \
+    && sed -i -e "s/classes= 20/classes = 2/g" ./cfg/voc.data
 
-RUN sed -i -e "s/batch=1/batch=64/g" ./cfg/yolov3-voc.cfg \
-    && sed -i -e "s/subdivisions=1/subdivisions=16/g" ./cfg/yolov3-voc.cfg 
+RUN sed -i -e "s/batch=1/batch=64/g" ./cfg/yolov2-tiny-voc.cfg \
+    && sed -i -e "s/subdivisions=1/subdivisions=16/g" ./cfg/yolov2-tiny-voc.cfg 
 
-CMD ["./darknet", "detector", "train", "cfg/voc.data", "cfg/yolov3-voc.cfg", "darknet53.conv.74", "-dont_show"]
+CMD ["./darknet", "detector", "train", "cfg/voc.data", "cfg/yolov2-tiny-voc.cfg", "darknet53.conv.74", "-dont_show"]
