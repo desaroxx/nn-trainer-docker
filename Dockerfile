@@ -35,4 +35,4 @@ RUN echo "classes= 20\ntrain = train.txt\nvalid = 2007_test.txt\nnames = data/vo
 RUN sed -i -e "s/batch=1/batch=64/g" ./cfg/yolov3-voc.cfg \
     && sed -i -e "s/subdivisions=1/subdivisions=16/g" ./cfg/yolov3-voc.cfg 
 
-CMD ["./darknet", "detector", "train", "cfg/voc.data", "cfg/yolov3-voc.cfg", "darknet53.conv.74"]
+CMD ["./darknet", "detector", "train", "cfg/voc.data", "cfg/yolov3-voc.cfg", "darknet53.conv.74", "-dont_show"]
