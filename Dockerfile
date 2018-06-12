@@ -32,4 +32,7 @@ RUN python voc_label.py
 RUN cat 2007_train.txt 2007_val.txt 2012_*.txt > train.txt
 RUN echo "classes= 20\ntrain = train.txt\nvalid = 2007_test.txt\nnames = data/voc.names\nbackup = backup" > cfg/voc.data
 
+RUN sed -i -e "s/batch=1/batch=64/g" ./cfg/yolov3-voc.cfg \
+    && sed -i -e "s/subdivisions=1/subdivisions=16/g" ./cfg/yolov3-voc.cfg 
+
 CMD ["./darknet", "detector", "train", "cfg/voc.data", "cfg/yolov3-voc.cfg", "darknet53.conv.74"]
